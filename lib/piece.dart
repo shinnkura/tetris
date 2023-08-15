@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'values.dart';
 
 class Piece {
@@ -8,6 +10,11 @@ class Piece {
 
   // the piece is just a list of positions
   List<int> position = [];
+
+  // color of the piece
+  Color get color {
+    return tetrominoColors[type] ?? Color(0xFFFFFFFF);
+  }
 
   // generate the piece
   void initializePiece() {
