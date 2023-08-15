@@ -36,6 +36,12 @@ class _GameBoardState extends State<GameBoard> {
   // current tetris piece
   Piece currentPiece = Piece(type: Tetromino.L);
 
+  // current score
+  int currentScore = 0;
+
+  //game over status
+  bool gameOver = false;
+
   @override
   void initState() {
     super.initState();
@@ -59,14 +65,68 @@ class _GameBoardState extends State<GameBoard> {
       frameRate,
       (timer) {
         setState(() {
+          // clear lines
+          clearLines();
+
           // check landing
           checkLanding();
+
+          // check if game is over
+          if (gameOver == true) {
+            timer.cancel();
+            showGameOverDialog();
+          }
 
           // move the piece down
           currentPiece.movePiece(Direction.down);
         });
       },
     );
+  }
+
+  // game over message
+  void showGameOverDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Game Over'),
+        content: Text('Your score is $currentScore'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // reset the game
+              resetGame();
+
+              // close the dialog
+              Navigator.pop(context);
+            },
+            child: Text('Play Again'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // reset game
+  void resetGame() {
+    // clear the game board
+    gameBoard = List.generate(
+      colLength,
+      (i) => List.generate(
+        rowLength,
+        (j) => null,
+      ),
+    );
+
+    // new game
+    gameOver = false;
+    currentScore = 0;
+
+    // create a new piece
+    createNewPiece();
+
+    // start the game
+    startGame();
   }
 
   // check for collision in a future position
@@ -124,6 +184,10 @@ class _GameBoardState extends State<GameBoard> {
         Tetromino.values[random.nextInt(Tetromino.values.length)];
     currentPiece = Piece(type: randomType);
     currentPiece.initializePiece();
+
+    if (isGameOver()) {
+      gameOver = true;
+    }
   }
 
   // move the piece left
@@ -152,6 +216,51 @@ class _GameBoardState extends State<GameBoard> {
     setState(() {
       currentPiece.rotatePiece();
     });
+  }
+
+  // clean lines
+  void clearLines() {
+    // step1: Loop through each row of the game board from bottom to top
+    for (int row = colLength - 1; row >= 0; row--) {
+      // step 2: Initialize a variable to track if the row is full
+      bool rowIsFull = true;
+
+      // step 3: Check if the row if full (all columns in the row are filled with pieces)
+      for (int col = 0; col < rowLength; col++) {
+        // if there's an empty column, set rowIsFull to false and break out of the loop
+        if (gameBoard[row][col] == null) {
+          rowIsFull = false;
+          break;
+        }
+      }
+
+      // step 4: If the row is full, clear the row and shift rows down
+      if (rowIsFull) {
+        //step 5: move all rows above the cleard row down by one position
+        for (int r = row; r > 0; r--) {
+          // copy the row above row to the current row
+          gameBoard[r] = List.from(gameBoard[r - 1]);
+        }
+
+        // step 6: clear the top row
+        gameBoard[0] = List.generate(row, (index) => null);
+
+        // step 7: repeat the loop for the current row
+        currentScore++;
+      }
+    }
+  }
+
+  // GAME OVER METHOD
+  bool isGameOver() {
+    // check if any columns in the top row are filled
+    for (int col = 0; col < rowLength; col++) {
+      if (gameBoard[0][col] != null) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   @override
@@ -196,8 +305,14 @@ class _GameBoardState extends State<GameBoard> {
               },
             ),
           ),
+          Text(
+            'Score: $currentScore',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.only(bottom: 50.0, top: 50.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
