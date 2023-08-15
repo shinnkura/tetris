@@ -13,7 +13,60 @@ class Piece {
   void initializePiece() {
     switch (type) {
       case TetrominoType.L:
-        position = [4, 14, 24, 25];
+        position = [
+          -26,
+          -16,
+          -6,
+          -5,
+        ];
+        break;
+      case TetrominoType.J:
+        position = [
+          -25,
+          -15,
+          -5,
+          -6,
+        ];
+        break;
+      case TetrominoType.I:
+        position = [
+          -4,
+          -5,
+          -6,
+          -7,
+        ];
+        break;
+      case TetrominoType.O:
+        position = [
+          -26,
+          -16,
+          -6,
+          -5,
+        ];
+        break;
+      case TetrominoType.S:
+        position = [
+          -15,
+          -14,
+          -6,
+          -5,
+        ];
+        break;
+      case TetrominoType.Z:
+        position = [
+          -17,
+          -16,
+          -6,
+          -5,
+        ];
+        break;
+      case TetrominoType.T:
+        position = [
+          -26,
+          -16,
+          -6,
+          -15,
+        ];
         break;
       default:
     }
