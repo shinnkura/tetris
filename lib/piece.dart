@@ -2,7 +2,7 @@ import 'values.dart';
 
 class Piece {
   // type of tetris peice
-  TetrominoType type;
+  Tetromino type;
 
   Piece({required this.type});
 
@@ -12,7 +12,7 @@ class Piece {
   // generate the piece
   void initializePiece() {
     switch (type) {
-      case TetrominoType.L:
+      case Tetromino.L:
         position = [
           -26,
           -16,
@@ -20,7 +20,7 @@ class Piece {
           -5,
         ];
         break;
-      case TetrominoType.J:
+      case Tetromino.J:
         position = [
           -25,
           -15,
@@ -28,7 +28,7 @@ class Piece {
           -6,
         ];
         break;
-      case TetrominoType.I:
+      case Tetromino.I:
         position = [
           -4,
           -5,
@@ -36,7 +36,7 @@ class Piece {
           -7,
         ];
         break;
-      case TetrominoType.O:
+      case Tetromino.O:
         position = [
           -26,
           -16,
@@ -44,7 +44,7 @@ class Piece {
           -5,
         ];
         break;
-      case TetrominoType.S:
+      case Tetromino.S:
         position = [
           -15,
           -14,
@@ -52,7 +52,7 @@ class Piece {
           -5,
         ];
         break;
-      case TetrominoType.Z:
+      case Tetromino.Z:
         position = [
           -17,
           -16,
@@ -60,7 +60,7 @@ class Piece {
           -5,
         ];
         break;
-      case TetrominoType.T:
+      case Tetromino.T:
         position = [
           -26,
           -16,

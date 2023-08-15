@@ -8,7 +8,7 @@ enum Direction {
   down,
 }
 
-enum TetrominoType {
+enum Tetromino {
   L,
   J,
   I,
