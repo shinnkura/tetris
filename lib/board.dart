@@ -284,7 +284,7 @@ class _GameBoardState extends State<GameBoard> {
                 if (currentPiece.position.contains(index)) {
                   return Pixel(
                     color: Colors.yellow,
-                    child: index,
+                    // child: index,
                   );
                 }
 
@@ -292,14 +292,16 @@ class _GameBoardState extends State<GameBoard> {
                 else if (gameBoard[row][col] != null) {
                   final Tetromino? tetrominoType = gameBoard[row][col]!;
                   return Pixel(
-                      color: tetrominoColors[tetrominoType], child: '');
+                    color: tetrominoColors[tetrominoType],
+                    // child: index,
+                  );
                 }
 
                 // blank pixel
                 else {
                   return Pixel(
                     color: Colors.grey[900],
-                    child: index,
+                    // child: index,
                   );
                 }
               },
