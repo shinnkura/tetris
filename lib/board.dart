@@ -133,7 +133,7 @@ class _GameBoardState extends State<GameBoard> {
   // returns true -> there is a collision
   // returns false -> there is no collision
   bool checkCollision(Direction direction) {
-    // loop throuth each position in the current piece
+    // loop through each position in the current piece
     for (int i = 0; i < currentPiece.position.length; i++) {
       // calculate the row and column of the current position
       int row = (currentPiece.position[i] / rowLength).floor();
@@ -148,8 +148,11 @@ class _GameBoardState extends State<GameBoard> {
         row += 1;
       }
 
-      // if no collision are detected, return false
-      if (row >= colLength || col < 0 || col >= rowLength) {
+      // if the new position is outside the game board or collides with an existing block, return true
+      if (row >= colLength ||
+          col < 0 ||
+          col >= rowLength ||
+          (row >= 0 && gameBoard[row][col] != null)) {
         return true;
       }
     }
@@ -161,11 +164,12 @@ class _GameBoardState extends State<GameBoard> {
   void checkLanding() {
     // if going down is occupied
     if (checkCollision(Direction.down)) {
-      // mark posiotions as occupied on the gameboard
+      // mark positions as occupied on the gameboard
       for (int i = 0; i < currentPiece.position.length; i++) {
         int row = (currentPiece.position[i] / rowLength).floor();
         int col = currentPiece.position[i] % rowLength;
         if (row >= 0 && col >= 0) {
+          // Add the current piece to the game board
           gameBoard[row][col] = currentPiece.type;
         }
       }
